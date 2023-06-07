@@ -14,7 +14,7 @@ from   makefun           import create_function
 from   inspect           import getmodule
 
 # ==============================================================================
-#
+# TODO: add `unwrap` to wait for all messages in call chain
 class EsaCallable(object):
     """
     Generic wrapper class for callable functions.
@@ -38,25 +38,38 @@ class EsaCallable(object):
         self.FUNC_PARAMS = functionParams
 
     def callExternal(self, signer: Signer = None, waitForTransaction: bool = True):
+        """
+        Creates and sends external message to target contract. You can use the `Signer` that
+        was specified earlier (during contract creation) or override it with any custom `Signer`.
+        
+        If you need no Signer then use `Signer.NoSigner()`.
+        """
         if signer is None:
             if hasattr(self, "CONTRACT"):
                 signer = self.CONTRACT.SIGNER
             else:
                 print("")
                 print("Error! No SIGNER in EsaCallable.callExternal(...)!")
-                print(f"Please provide a valid signer!")
+                print(f"Please provide a valid Signer!")
                 print("")
                 raise
 
         result = callFunction(everClient=self.EVERCLIENT, abiPath=self.ABI, contractAddress=self.ADDRESS, functionName=self.FUNC_NAME, functionParams=self.FUNC_PARAMS, signer=signer, waitForTransaction=waitForTransaction)
         return result
 
-    def sendFromMultisig(self, msig, value: int = DIME, bounce: bool = True, flags: int = 1):
+    def callFromMultisig(self, msig, value: int = DIME, bounce: bool = True, flags: int = 1):
+        """
+        Encode a message as `payload` and send to target contract using Multisig wallet.
+        """
         messageBoc = prepareMessageBoc(abiPath=self.ABI, functionName=self.FUNC_NAME, functionParams=self.FUNC_PARAMS)
         result     = msig.sendTransaction(dest=self.ADDRESS, value=value, bounce=bounce, flags=flags, payload=messageBoc)
         return result
 
     def submitToMultisig(self, msig, value: int = DIME, bounce: bool = True, allBalance: bool = False):
+        """
+        Encode a message as `payload` and submit to Multisig wallet that has 2 or more signatures. 
+        After the message is approved it will be sent to target contract.
+        """
         messageBoc = prepareMessageBoc(abiPath=self.ABI, functionName=self.FUNC_NAME, functionParams=self.FUNC_PARAMS)
         result     = msig.submitTransaction(dest=self.ADDRESS, value=value, bounce=bounce, allBalance=allBalance, payload=messageBoc)
         return result
@@ -64,6 +77,10 @@ class EsaCallable(object):
     def run(self):
         """
         Run function locally without signing and/or modifying the state.
+
+        Contract BOC (Bag of Cells) is downloaded and cached  first time any local function
+        is run, that means first run will take more time than next ones. Caching is performed 
+        per-contract, you can call any other getters and they will use cached BOC.
         """
         boc = self.CONTRACT.getBOC()
         result = runFunctionLocal(everClient=self.EVERCLIENT, boc=boc, abiPath=self.ABI, contractAddress=self.ADDRESS, functionName=self.FUNC_NAME, functionParams=self.FUNC_PARAMS)

@@ -10,17 +10,10 @@ from  .esa_lowlevel_util import generateRandomMnemonic
 #
 parser = argparse.ArgumentParser(description="eversa CLI helps to automate building and testing Everscale/Venom smart contracts")
 subparsers = parser.add_subparsers(dest='command', required=True)
-#parser.add_argument("-a", "--archive", action="store_true", help="archive mode")
-#parser.add_argument("-v", "--verbose", action="store_true", help="increase verbosity")
-#parser.add_argument("-B", "--block-size", help="checksum blocksize")
-#parser.add_argument("--ignore-existing", action="store_true", help="skip files that exist")
-#parser.add_argument("--exclude", help="files to exclude")
-#parser.add_argument("src", help="Source location")
-#parser.add_argument("dest", help="Destination location")
 
-parserInit = subparsers.add_parser('init', help="init help")
-parserInit.add_argument('--force',     action='store_true', help='0000')
-parserInit.add_argument('--no-sample', action='store_true', help='0000')
+parserInit = subparsers.add_parser('init', help="Initialize empty project with samples in current directory")
+parserInit.add_argument('--force',     action='store_true', help='Firse initialization even if directory is not empty')
+parserInit.add_argument('--no-sample', action='store_true', help='Do not copy any sample files')
 
 parserBuild = subparsers.add_parser('build', help="build help")
 parserBuild.add_argument('contracts', metavar='contracts', type=str, nargs='*', help='List of contract names to build')
@@ -28,7 +21,7 @@ parserBuild.add_argument('contracts', metavar='contracts', type=str, nargs='*', 
 parserMeta = subparsers.add_parser('meta',  help="Show metadata/function list for a specific contract")
 parserMeta.add_argument('contracts', metavar='contracts', type=str, nargs='+', help='List of contract names to show metadta for')
 
-parserTest = subparsers.add_parser('test',  help="test help")
+parserTest = subparsers.add_parser('test',  help="Run test script to test the contracts")
 
 # ==============================================================================
 #
@@ -106,19 +99,15 @@ def runMeta(args):
 def runTest(args):
     print("runTest")
 
+# ==============================================================================
+#
 parserInit.set_defaults(func=runInit)
 parserBuild.set_defaults(func=runBuild)
 parserMeta.set_defaults(func=runMeta)
 parserTest.set_defaults(func=runTest)
-#print(config)
-
-
 
 # ==============================================================================
-# init, init force, init with sample
-# build all, build single
-# show meta for contract
-# test
+# 
 def main():
     args = parser.parse_args()
     if args.command is None:

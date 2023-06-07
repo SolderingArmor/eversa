@@ -4,6 +4,25 @@
 
 eversa consists of a library and CLI.
 
+## Requirements
+
+To build contracts you need `everdev` utility with `solc` compiler and `tvm-linker` installed. Please refer to https://github.com/tonlabs/everdev or simply run:
+
+```
+> npm i -g everdev
+> everdev sol update
+```
+
+To locally test contracts you need `docker` and `tonlabs/local-node`. 
+
+For `docker` installation refer to https://docs.docker.com/engine/install.
+
+For `tonlabs/local-node` installation refer to https://hub.docker.com/r/tonlabs/local-node or simply run:
+
+```
+> docker run -d --name local-node -e USER_AGREEMENT=yes -p80:80 tonlabs/local-node
+```
+
 ## Installation
 
 ```
@@ -18,16 +37,22 @@ TODO
 
 ## CLI
 
+To run a cli type the following in console:
+
+```
+> eversa
+```
+
 ### Features
 
 -   **init**
-    - TODO
+    - Initializes empty project with sample contract, sample test script and configuration file.
 -   **build**
-    - TODO
+    - Builds single or all contracts and puts artifacts in thrget folder set in configuration file.
 -   **meta**
-    - TODO
+    - Prints list of contract functions with all arguments. Static code parsers won't pick up contract's dynamic functions and reading ABI can be... frustrating.
 -   **test**
-    - TODO
+    - Wraps and runs test scripts.
 
 ## Configuration
 
@@ -51,7 +76,7 @@ To ensure that everything works you can simply run the following commands in an 
 
 ## Code examples
 
-TODO
+You can open `tests/tests.py` code file (after you run `init`) to see hands-on examples of `eversa` toolkit.
 
 ## Useful Links
 

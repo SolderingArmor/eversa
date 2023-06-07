@@ -70,7 +70,7 @@ class EsaReturnValue(object):
     #
     def SetResult(self, everResult: ResultOfProcessMessage):
         self.RESULT = everResult
-        # TODO: parse
+        # TODO: parse result
 
     # ======================================
     #
