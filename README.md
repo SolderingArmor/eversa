@@ -67,7 +67,7 @@ First, see if the answer to your question can be found in this readme or in the 
 
 If the answer is not there:
 
--   Ask in [Telegram][https://t.me/eversa_main] to get help, or
+-   Ask in [Telegram](https://t.me/eversa_main) to get help, or
 -   Open a [discussion](https://github.com/SolderingArmor/eversa/discussions/new) with your question, or
 -   Open an issue with [the bug](https://github.com/SolderingArmor/eversa/issues/new)
 
