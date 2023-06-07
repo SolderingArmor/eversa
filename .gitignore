@@ -1,0 +1,5 @@
+build/*
+dist/*
+eversa.egg-info/*
+*__pycache__*
+build.sh

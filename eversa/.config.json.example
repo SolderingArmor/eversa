@@ -1,0 +1,57 @@
+{
+    "everdev": "everdev",
+    "source_dir": "contracts",
+    "bin_dir": "bin",
+    "verbose": false,
+    "configs": [
+        {
+            "name": "local",
+            "endpoints": ["http://localhost/graphql"],
+            "workchain": 0,
+            "giver": "0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94",
+            "phrase": "extend involve glad note mother spy metal uncle trust inform correct access"
+        },
+        {
+            "name": "devnet",
+            "endpoints": ["https://devnet-sandbox.evercloud.dev/graphql"],
+            "workchain": 0,
+            "giver": "",
+            "phrase": ""
+        },
+        {
+            "name": "mainnet",
+            "endpoints": ["https://mainnet.evercloud.dev/XXXXX/graphql"],
+            "workchain": 0,
+            "giver": "",
+            "phrase": ""
+        },
+        {
+            "name": "venom_testnet",
+            "endpoints": ["https://venom-testnet.evercloud.dev/XXXXX/graphql"],
+            "workchain": 0,
+            "giver": "",
+            "phrase": ""
+        },
+        {
+            "name": "venom_devnet",
+            "endpoints": ["https://gql-testnet.venom.foundation/graphql"],
+            "workchain": 0,
+            "giver": "",
+            "phrase": ""
+        },
+        {
+            "name": "ton_testnet",
+            "endpoints": ["https://ton-testnet.evercloud.dev/XXXXX/graphql"],
+            "workchain": 0,
+            "giver": "",
+            "phrase": ""
+        },
+        {
+            "name": "ton_mainnet",
+            "endpoints": ["https://ton-mainnet.evercloud.dev/XXXXX/graphql"],
+            "workchain": 0,
+            "giver": "",
+            "phrase": ""
+        }
+    ]
+}
