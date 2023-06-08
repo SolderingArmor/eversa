@@ -16,7 +16,7 @@ setup(
     long_description_content_type ="text/markdown",
     license ='MIT',
     packages = find_packages(),
-    package_data={"eversa": ["README.md", ".config.json", ".config.json.example", "bin/*", "sample/*"]},
+    package_data={"eversa": ["README.md", ".config.json", ".config.json.example", "bin/*", "sample/*", "sample/.gitignore"]},
     entry_points ={
         'console_scripts': [
             'eversa = eversa.esa_cli:main'

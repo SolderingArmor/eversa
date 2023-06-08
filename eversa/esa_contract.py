@@ -41,7 +41,7 @@ class EsaCallable(object):
         """
         Creates and sends external message to target contract. You can use the `Signer` that
         was specified earlier (during contract creation) or override it with any custom `Signer`.
-        
+
         If you need no Signer then use `Signer.NoSigner()`.
         """
         if signer is None:
@@ -143,7 +143,7 @@ class EsaContractGenerator(object):
         with open(self.ABI) as abiContents:
             abiConfig = json.load(abiContents)
 
-            # 1. genetate "updateInitData" with initdata and initialPubkey params
+            # 1. genetate "esaUpdateInitData" with initdata and initialPubkey params
             #
             initDataFields = []
             for field in abiConfig["data"]:
@@ -156,8 +156,8 @@ class EsaContractGenerator(object):
                 initDataParams = "initialPubkey:str=ZERO_PUBKEY,signer:Signer=None"
             setattr(
                 self, 
-                "updateInitData", 
-                create_function(f"updateInitData({initDataParams})", 
+                "esaUpdateInitData", 
+                create_function(f"esaUpdateInitData({initDataParams})", 
                                 self._genericUpdateInitDataFunction, inject_as_first_arg=True)
             )
 

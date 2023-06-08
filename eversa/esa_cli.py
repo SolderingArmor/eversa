@@ -4,7 +4,9 @@ import os
 import argparse
 import json
 import shutil
+from   inspect import getmodule, getmembers, isfunction, signature
 from  .esa_lowlevel_util import generateRandomMnemonic
+from  .eversa import EverSa
 
 # ==============================================================================
 #
@@ -88,11 +90,20 @@ def runBuild(args):
         pass
 
 # ==============================================================================
-#
+# TODO: make search case-insensitive
 def runMeta(args):
-    print("runMeta")
-    for contract in args.contracts:
-        pass
+    esa = EverSa()
+    print(f"Showing all functions for contracts:")
+    for contractName in args.contracts:
+        print(f"")
+        print(f"\"{contractName}\":")
+        contract = esa.GetContract(contractName)
+        for (name, func) in getmembers(contract, isfunction):
+            if name == "esaUpdateInitData":
+                continue
+            if name == "deploy":
+                name = "constructor"
+            print(f"    {name}{signature(func)}")
 
 # ==============================================================================
 #

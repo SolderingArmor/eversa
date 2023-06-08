@@ -55,9 +55,9 @@ class EverSa(object):
     def GetContract(self, contractName: str, **kwargs) -> EsaContract:
         """
         Creates a class of contract with name `contractName`. All keyword-arguments (**kwargs) 
-        received by this function will be propagated as keyword-arguments to `updateInitData`.
+        received by this function will be propagated as keyword-arguments to `esaUpdateInitData`.
 
-        `updateInitData` additionally accepts the following arguments:
+        `esaUpdateInitData` additionally accepts the following arguments:
 
         :param `initialPubkey`: Initial Public Key that will be injected into contract code when InitData is generated.
                 Used in such contracts as `SafeMultisig` or `SetcodeMultisig`. Default value is `ZERO_PUBKEY`.
@@ -71,7 +71,7 @@ class EverSa(object):
             contract = EsaContract(everClient=self.EVERCLIENT, abiPath=abiPath, tvcPath=tvcPath)
             contract.generateFunctionsFromAbi()
             try:
-                contract.updateInitData(**kwargs)
+                contract.esaUpdateInitData(**kwargs)
             except TypeError as te:
                 toFind = "required positional argument"
                 if toFind in str(te):

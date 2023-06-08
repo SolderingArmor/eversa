@@ -43,7 +43,7 @@ To run a cli type the following in console:
 > eversa
 ```
 
-### Features
+### Commands
 
 -   **init**
     - Initializes empty project with sample contract, sample test script and configuration file.
