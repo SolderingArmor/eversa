@@ -9,7 +9,7 @@
             "endpoints": ["http://localhost/graphql"],
             "workchain": 0,
             "giver": "0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94",
-            "phrase": "extend involve glad note mother spy metal uncle trust inform correct access"
+            "phrase": ""
         },
         {
             "name": "devnet",

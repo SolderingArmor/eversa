@@ -42,3 +42,4 @@ print(f"Multisig 1 balance: {msig1.getBalance(showInEvers=True)}")
 # Specify contract constructor params in `deploy` function and print results
 result = msig1.deploy(owners=[f"0x{signer1.keys.public}"], reqConfirms=1)
 print(result["result"], result["exception"])
+
