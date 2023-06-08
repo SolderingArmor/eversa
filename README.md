@@ -43,6 +43,16 @@ To run a cli type the following in console:
 > eversa
 ```
 
+To see full command description simply run:
+
+```
+> eversa -h
+> eversa init -h
+> eversa build -h
+> eversa meta -h
+> eversa test -h
+``` 
+
 ### Commands
 
 -   **init**
@@ -53,6 +63,7 @@ To run a cli type the following in console:
     - Prints list of contract functions with all arguments. Static code parsers won't pick up contract's dynamic functions and reading ABI can be... frustrating.
 -   **test**
     - Wraps and runs test scripts.
+
 
 ## Configuration
 
@@ -77,6 +88,28 @@ To ensure that everything works you can simply run the following commands in an 
 ## Code examples
 
 You can open `tests/tests.py` code file (after you run `init`) to see hands-on examples of `eversa` toolkit.
+
+The following is a complete example of importing `eversa`, initializing toolkit, instantiating `Surf` wallet, deploying it, running getters and `sendTransaction`:
+
+```
+from eversa import *
+
+esa = EverSa()
+
+signer = esa.getSigner(7)
+surf   = esa.GetContract("Surf", signer=signer, initialPubkey=signer.keys.public)
+esa.Airdrop(surf.ADDRESS, EVER)
+surf.deploy(owners=[f"0x{signer.keys.public}"], reqConfirms=1)
+
+print(f"Surf address: {surf.ADDRESS}")
+print(f"Surf balance: {surf.getBalance(True)}")
+
+custodians = surf.getCustodians().run()
+print(f"Surf custodians: {custodians}")
+
+result = surf.sendTransaction(dest=ZeroAddress(), value=DIME*2, bounce=False, flags=1, payload=ZERO_PAYLOAD).callExternal()
+print(result["result"], result["exception"])
+```
 
 ## Useful Links
 

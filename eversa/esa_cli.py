@@ -17,7 +17,7 @@ parserInit = subparsers.add_parser('init', help="Initialize empty project with s
 parserInit.add_argument('--force',     action='store_true', help='Firse initialization even if directory is not empty')
 parserInit.add_argument('--no-sample', action='store_true', help='Do not copy any sample files')
 
-parserBuild = subparsers.add_parser('build', help="build help")
+parserBuild = subparsers.add_parser('build', help="TODO")
 parserBuild.add_argument('contracts', metavar='contracts', type=str, nargs='*', help='List of contract names to build')
 
 parserMeta = subparsers.add_parser('meta',  help="Show metadata/function list for a specific contract")

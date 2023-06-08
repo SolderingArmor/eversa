@@ -47,13 +47,6 @@ def getNowTimestamp():
 
 # ==============================================================================
 #
-def loadSigner(keysFile=None) -> Signer:
-    if keysFile is None:
-        signer = Signer.External(ZERO_PUBKEY)
-    else:
-        signer = Signer.Keys(KeyPair.load(keysFile, False))
-    return signer
-
 def generateRandomMnemonic() -> str:
     crypto = TonClient(config=ClientConfig()).crypto
     phrase = crypto.mnemonic_from_random(params=ParamsOfMnemonicFromRandom()).phrase
@@ -78,8 +71,16 @@ def generateSignerFromMnemonic(phrase: str, childIndex: int=0, hardened=True) ->
     except:
         raise "Invalid Mnemonic!"
 
-def saveSignerToFile(filename: str, signer: Signer = generateRandomSigner()):
+def saveSigner(filename: str, signer: Signer = generateRandomSigner()):
     signer.keys.dump(filename, False)
+
+def loadSigner(keysFile=None) -> Signer:
+    if keysFile is None:
+        signer = Signer.External(ZERO_PUBKEY)
+    else:
+        signer = Signer.Keys(KeyPair.load(keysFile, False))
+    return signer
+
 
 # ==============================================================================
 #

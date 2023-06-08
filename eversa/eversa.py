@@ -11,13 +11,13 @@ from  .esa_lowlevel_bc   import callFunction
 from  .esa_contract      import *
 
 # ==============================================================================
-# 
+# TODO: allow EverSa to detect config file even we run it not from project root folder
 class EverSa(object):
     def __init__(self, target: str = "local"):
         self.CONFIG      = EsaConfig(target)
         self.EVERCLIENT  = self.getEverClient()
         self.MODULE_PATH = os.path.dirname(os.path.realpath(__file__))
-        self.WORK_DIR    = os.getcwd()
+        self.WORK_DIR    = os.getcwd() # TODO: set to `.config.json` location
     
     def Log(self, *args):
         if self.CONFIG.VERBOSE:
@@ -52,7 +52,7 @@ class EverSa(object):
 
     # ========================================
     #
-    def GetContract(self, contractName: str, **kwargs) -> EsaContract:
+    def GetContract(self, contractName: str, initialPubkey: str=ZERO_PUBKEY, signer: Signer=None, **kwargs) -> EsaContract:
         """
         Creates a class of contract with name `contractName`. All keyword-arguments (**kwargs) 
         received by this function will be propagated as keyword-arguments to `esaUpdateInitData`.
@@ -71,7 +71,7 @@ class EverSa(object):
             contract = EsaContract(everClient=self.EVERCLIENT, abiPath=abiPath, tvcPath=tvcPath)
             contract.generateFunctionsFromAbi()
             try:
-                contract.esaUpdateInitData(**kwargs)
+                contract.esaUpdateInitData(initialPubkey=initialPubkey, signer=signer, **kwargs)
             except TypeError as te:
                 toFind = "required positional argument"
                 if toFind in str(te):
