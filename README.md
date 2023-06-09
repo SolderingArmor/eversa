@@ -4,6 +4,14 @@
 
 eversa consists of a library and CLI.
 
+## WIP Disclaimer
+
+This project is currently work in progress, like alpha version, some features may be broken or missing!
+
+Library part should fully work (best of my knowledge), Solidity contract sample is still missing, `eversa build` is still missing, `eversa test` is still missing.
+
+But fear not! You can already do `eversa init` and use the library!
+
 ## Requirements
 
 To build contracts you need `everdev` utility with `solc` compiler and `tvm-linker` installed. Please refer to https://github.com/tonlabs/everdev or simply run:
@@ -34,6 +42,21 @@ For `tonlabs/local-node` installation refer to https://hub.docker.com/r/tonlabs/
 ### Features
 
 TODO
+
+One of the main features is `EverSa.getContract(...)` function. It dynamically builds python Object class with all contract functions from ABI.
+
+`eversa` comes with pre-built Multisig contracts that are always ready for use. After `init` you can use the following Multisig wallets without any hassle or preparation:
+
+```
+esa    = EverSa()
+signer = generateRandomSigner()
+setc  = esa.GetContract("SetcodeMultisig",   signer=signer, initialPubkey=signer.keys.public)
+safe  = esa.GetContract("SafeMultisig",      signer=signer, initialPubkey=signer.keys.public)
+surf  = esa.GetContract("Surf",              signer=signer, initialPubkey=signer.keys.public)
+high  = esa.GetContract("HighloadSinglesig", signer=signer, initialPubkey=signer.keys.public)
+```
+
+Want some contract in pre-built directory? Hop in to [Telegram](https://t.me/eversa_main)!
 
 ## CLI
 
