@@ -155,3 +155,15 @@ If the answer is not there:
 If you want to contribute, or follow along with contributor discussion, you can use our [main telegram](https://t.me/eversa_main) to chat with us about the development of `eversa`!
 
 ## Acknowledgements
+
+TODO
+
+## Roadmap
+
+Something that needs to be done at some point to make life of users easier.
+
+* Add message tracing to library
+* Choose compiler version while building (and cache compiler binaries)
+* Define function variables types in meta (as close to Solidity as possible)
+* Write best practices writing tests for reusable and clean environments
+* Tests should support sets of rules to ignore specific errors for example
