@@ -92,13 +92,17 @@ class EverSa(object):
             return contract
         return None
     
+    def getContractCode(self, contractName: str):
+        tvcPath = self.findArtifact(contractName, "tvc")
+        return getCodeFromTvc(tvcPath)
+
     def getEverClient(self):
         return TonClient(config=ClientConfig(network=NetworkConfig(endpoints=self.CONFIG.ENDPOINTS), abi=AbiConfig(workchain=self.CONFIG.WORKCHAIN)))
 
-    def Airdrop(self, contractAddress: str, value: int):
+    def airdrop(self, contractAddress: str, value: int):
         """
         Top-up or fund or give native coin to a contract using Giver (currently works for local node only).
         """
-        self.Log(f"EverSa.Airdrop(contractAddress: {contractAddress}, value: {value})")
+        self.Log(f"EverSa.airdrop(contractAddress: {contractAddress}, value: {value})")
         abiPath = self.findArtifact("local_giver", "abi.json")
         return callFunction(self.EVERCLIENT, abiPath, self.CONFIG.GIVER, "sendGrams", {"dest":contractAddress,"amount":value}, Signer.NoSigner())

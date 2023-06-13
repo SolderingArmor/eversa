@@ -35,7 +35,7 @@ signer4 = loadSigner(filename="signer3.json")
 #
 # Dynamically create `SetcodeMultisig` contract class
 msig1 = esa.GetContract("SetcodeMultisig", signer=signer1, initialPubkey=signer1.keys.public)
-esa.Airdrop(msig1.ADDRESS, EVER)
+esa.airdrop(msig1.ADDRESS, EVER)
 print(f"Multisig 1 address: {msig1.ADDRESS}")
 print(f"Multisig 1 balance: {msig1.getBalance(showInEvers=True)}")
 

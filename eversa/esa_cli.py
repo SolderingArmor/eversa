@@ -5,7 +5,7 @@ import argparse
 import json
 import shutil
 from   inspect import getmodule, getmembers, isfunction, signature
-from  .esa_lowlevel_util import generateRandomMnemonic
+from  .esa_lowlevel_util import generateRandomMnemonic, generateRandomSigner, saveSigner
 from  .eversa import EverSa
 
 # ==============================================================================
@@ -24,6 +24,12 @@ parserMeta = subparsers.add_parser('meta',  help="Show metadata/function list fo
 parserMeta.add_argument('contracts', metavar='contracts', type=str, nargs='+', help='List of contract names to show metadta for')
 
 parserTest = subparsers.add_parser('test',  help="Run test script to test the contracts")
+
+parserSeed = subparsers.add_parser('new-seed', help="Creates a random seed phrase with an option to save it to file")
+parserSeed.add_argument('output', metavar='output', type=str, nargs='*', help='File name to save seed to')
+
+parserKeys = subparsers.add_parser('new-keys',  help="Creates a random private/public keypais with an option to save it to file")
+parserKeys.add_argument('output', metavar='output', type=str, nargs='*', help='File name to save keys to')
 
 # ==============================================================================
 #
@@ -112,10 +118,41 @@ def runTest(args):
 
 # ==============================================================================
 #
+def runSeed(args):
+    if len(args.output) == 0:
+        phrase = generateRandomMnemonic()
+        print(phrase)
+        return
+    else: 
+        fileList = args.output
+        for file in fileList:
+            print(f"Saving random seed phrase to \"{file}\"...")
+            phrase = generateRandomMnemonic()
+            with open(file, "w") as f:
+                f.write(phrase)
+
+# ==============================================================================
+#
+def runKeys(args):
+    if len(args.output) == 0:
+        signer = generateRandomSigner()
+        print(signer.keys.dict)
+        return
+    else: 
+        fileList = args.output
+        for file in fileList:
+            print(f"Saving random keys to \"{file}\"...")
+            signer = generateRandomSigner()
+            saveSigner(file, signer)
+
+# ==============================================================================
+#
 parserInit.set_defaults(func=runInit)
 parserBuild.set_defaults(func=runBuild)
 parserMeta.set_defaults(func=runMeta)
 parserTest.set_defaults(func=runTest)
+parserSeed.set_defaults(func=runSeed)
+parserKeys.set_defaults(func=runKeys)
 
 # ==============================================================================
 # 

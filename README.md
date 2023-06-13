@@ -121,7 +121,7 @@ esa = EverSa()
 
 signer = esa.getSigner(7)
 surf   = esa.GetContract("Surf", signer=signer, initialPubkey=signer.keys.public)
-esa.Airdrop(surf.ADDRESS, EVER)
+esa.airdrop(surf.ADDRESS, EVER)
 surf.deploy(owners=[f"0x{signer.keys.public}"], reqConfirms=1)
 
 print(f"Surf address: {surf.ADDRESS}")
@@ -167,3 +167,12 @@ Something that needs to be done at some point to make life of users easier.
 * Define function variables types in meta (as close to Solidity as possible)
 * Write best practices writing tests for reusable and clean environments
 * Tests should support sets of rules to ignore specific errors for example
+
+## Changelog
+
+v.0.2.0:
+
+* Added `new-seed` to cli to easily generate and save random seed phrases;
+* Added `new-keys` to cli to easily generate and save random keypairs;
+* Added `getContractCode` to `eversa` to get code from tvc for contracts;
+* Renamed `Airdrop` to `airdrop` in `eversa` to be consistent in naming.
