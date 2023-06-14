@@ -43,12 +43,12 @@ For `tonlabs/local-node` installation refer to https://hub.docker.com/r/tonlabs/
 
 TODO
 
-One of the main features is `EverSa.getContract(...)` function. It dynamically builds python Object class with all contract functions from ABI.
+One of the main features is `eversa.getContract(...)` function. It dynamically builds python Object class with all contract functions from ABI.
 
 `eversa` comes with pre-built Multisig contracts that are always ready for use. After `init` you can use the following Multisig wallets without any hassle or preparation:
 
 ```
-esa    = EverSa()
+esa    = eversa()
 signer = generateRandomSigner()
 setc  = esa.GetContract("SetcodeMultisig",   signer=signer, initialPubkey=signer.keys.public)
 safe  = esa.GetContract("SafeMultisig",      signer=signer, initialPubkey=signer.keys.public)
@@ -74,6 +74,8 @@ To see full command description simply run:
 > eversa build -h
 > eversa meta -h
 > eversa test -h
+> eversa new-seed -h
+> eversa new-keys -h
 ``` 
 
 ### Commands
@@ -86,7 +88,10 @@ To see full command description simply run:
     - Prints list of contract functions with all arguments. Static code parsers won't pick up contract's dynamic functions and reading ABI can be... frustrating.
 -   **test**
     - Wraps and runs test scripts.
-
+-   **new-seed**
+    - Creates a random seed phrase with an option to save it to file.
+-   **new-keys**
+    - Creates a random private/public keypair with an option to save it to file.
 
 ## Configuration
 
@@ -117,7 +122,7 @@ The following is a complete example of importing `eversa`, initializing toolkit,
 ```
 from eversa import *
 
-esa = EverSa()
+esa = eversa()
 
 signer = esa.getSigner(7)
 surf   = esa.GetContract("Surf", signer=signer, initialPubkey=signer.keys.public)
@@ -162,6 +167,7 @@ TODO
 
 Something that needs to be done at some point to make life of users easier.
 
+* Merge Exception and result not to have dictionary as return value.
 * Add message tracing to library
 * Choose compiler version while building (and cache compiler binaries)
 * Define function variables types in meta (as close to Solidity as possible)
@@ -169,6 +175,10 @@ Something that needs to be done at some point to make life of users easier.
 * Tests should support sets of rules to ignore specific errors for example
 
 ## Changelog
+
+v.0.3.0:
+
+* Changed `EverSa` class name to `eversa` to be consistent in naming.
 
 v.0.2.0:
 

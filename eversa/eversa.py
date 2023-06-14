@@ -11,8 +11,8 @@ from  .esa_lowlevel_bc   import callFunction
 from  .esa_contract      import *
 
 # ==============================================================================
-# TODO: allow EverSa to detect config file even we run it not from project root folder
-class EverSa(object):
+# TODO: allow eversa to detect config file even we run it not from project root folder
+class eversa(object):
     def __init__(self, target: str = "local"):
         self.CONFIG      = EsaConfig(target)
         self.EVERCLIENT  = self.getEverClient()
@@ -103,6 +103,6 @@ class EverSa(object):
         """
         Top-up or fund or give native coin to a contract using Giver (currently works for local node only).
         """
-        self.Log(f"EverSa.airdrop(contractAddress: {contractAddress}, value: {value})")
+        self.Log(f"eversa.airdrop(contractAddress: {contractAddress}, value: {value})")
         abiPath = self.findArtifact("local_giver", "abi.json")
         return callFunction(self.EVERCLIENT, abiPath, self.CONFIG.GIVER, "sendGrams", {"dest":contractAddress,"amount":value}, Signer.NoSigner())

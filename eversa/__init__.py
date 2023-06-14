@@ -1,4 +1,4 @@
-from eversa.eversa            import EverSa
+from eversa.eversa            import eversa
 from eversa.esa_contract      import *
 from eversa.esa_config        import EsaConfig
 from eversa.esa_constants     import *

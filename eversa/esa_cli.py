@@ -6,7 +6,7 @@ import json
 import shutil
 from   inspect import getmodule, getmembers, isfunction, signature
 from  .esa_lowlevel_util import generateRandomMnemonic, generateRandomSigner, saveSigner
-from  .eversa import EverSa
+from  .eversa import eversa
 
 # ==============================================================================
 #
@@ -25,10 +25,10 @@ parserMeta.add_argument('contracts', metavar='contracts', type=str, nargs='+', h
 
 parserTest = subparsers.add_parser('test',  help="Run test script to test the contracts")
 
-parserSeed = subparsers.add_parser('new-seed', help="Creates a random seed phrase with an option to save it to file")
+parserSeed = subparsers.add_parser('new-seed', help="Create a random seed phrase with an option to save it to file")
 parserSeed.add_argument('output', metavar='output', type=str, nargs='*', help='File name to save seed to')
 
-parserKeys = subparsers.add_parser('new-keys',  help="Creates a random private/public keypais with an option to save it to file")
+parserKeys = subparsers.add_parser('new-keys',  help="Create a random private/public keypair with an option to save it to file")
 parserKeys.add_argument('output', metavar='output', type=str, nargs='*', help='File name to save keys to')
 
 # ==============================================================================
@@ -98,7 +98,7 @@ def runBuild(args):
 # ==============================================================================
 # TODO: make search case-insensitive
 def runMeta(args):
-    esa = EverSa()
+    esa = eversa()
     print(f"Showing all functions for contracts:")
     for contractName in args.contracts:
         print(f"")
