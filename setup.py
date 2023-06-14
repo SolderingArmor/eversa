@@ -7,7 +7,7 @@ longDescription = 'Everscale/Venom rapid application development and testing too
   
 setup(
     name ='eversa',
-    version ='0.3.0',
+    version ='0.4.0',
     author ='Anton Platonov',
     author_email ='anton@platonov.us',
     url ='https://github.com/SolderingArmor/eversa',

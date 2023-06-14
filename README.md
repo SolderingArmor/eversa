@@ -168,13 +168,19 @@ TODO
 Something that needs to be done at some point to make life of users easier.
 
 * Merge Exception and result not to have dictionary as return value.
-* Add message tracing to library
+* Add message tracing to library.
 * Choose compiler version while building (and cache compiler binaries)
 * Define function variables types in meta (as close to Solidity as possible)
 * Write best practices writing tests for reusable and clean environments
 * Tests should support sets of rules to ignore specific errors for example
 
 ## Changelog
+
+v.0.4.0
+* Added `giver_enabled` in `.config.json` file.
+* Added running `eversa test` for all test files in `tests` folder, currently WIP.
+* Updated test sample.
+* `filename` -> `keysFile` in `saveSigner()` to be consistent in naming.
 
 v.0.3.0:
 

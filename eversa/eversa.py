@@ -103,6 +103,8 @@ class eversa(object):
         """
         Top-up or fund or give native coin to a contract using Giver (currently works for local node only).
         """
+        if not self.CONFIG.GIVER_ENABLED:
+            return
         self.Log(f"eversa.airdrop(contractAddress: {contractAddress}, value: {value})")
         abiPath = self.findArtifact("local_giver", "abi.json")
         return callFunction(self.EVERCLIENT, abiPath, self.CONFIG.GIVER, "sendGrams", {"dest":contractAddress,"amount":value}, Signer.NoSigner())

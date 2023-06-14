@@ -71,8 +71,8 @@ def generateSignerFromMnemonic(phrase: str, childIndex: int=0, hardened=True) ->
     except:
         raise "Invalid Mnemonic!"
 
-def saveSigner(filename: str, signer: Signer = generateRandomSigner()):
-    signer.keys.dump(filename, False)
+def saveSigner(keysFile: str, signer: Signer = generateRandomSigner()):
+    signer.keys.dump(keysFile, False)
 
 def loadSigner(keysFile=None) -> Signer:
     if keysFile is None:

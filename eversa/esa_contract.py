@@ -223,6 +223,12 @@ class EsaContract(EsaContractGenerator):
         """
         result = self.GRAPHQL.getAccountGraphQL(accountID=self.ADDRESS, fields="acc_type")
         return int(result["acc_type"]) if result is not None else 0
+    
+    def getSalt():
+        pass # TODO
+
+    def setSalt():
+        pass # TODO
 
 # ==============================================================================
 #

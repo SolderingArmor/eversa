@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import argparse
 import json
 import shutil
+import imp
+from   io import StringIO 
 from   inspect import getmodule, getmembers, isfunction, signature
 from  .esa_lowlevel_util import generateRandomMnemonic, generateRandomSigner, saveSigner
 from  .eversa import eversa
@@ -24,6 +27,7 @@ parserMeta = subparsers.add_parser('meta',  help="Show metadata/function list fo
 parserMeta.add_argument('contracts', metavar='contracts', type=str, nargs='+', help='List of contract names to show metadta for')
 
 parserTest = subparsers.add_parser('test',  help="Run test script to test the contracts")
+parserTest.add_argument('environment', metavar='environment', type=str, nargs=1, help='Test environment (use a name from .config.json file), for example `local`')
 
 parserSeed = subparsers.add_parser('new-seed', help="Create a random seed phrase with an option to save it to file")
 parserSeed.add_argument('output', metavar='output', type=str, nargs='*', help='File name to save seed to')
@@ -113,8 +117,59 @@ def runMeta(args):
 
 # ==============================================================================
 #
+def getLibraryFunctions():
+    functionList = []
+    for (name, _func) in getmembers(sys.modules["eversa"], isfunction):
+        functionList.append(name)
+    return functionList
+
+def getPyFilesList(dir: str):
+    result = []
+    for file in os.listdir(dir):
+        # check only text files
+        if file.endswith('.py'):
+            result.append(file)
+    return result
+
+class Capturing(list):
+    def __enter__(self):
+        self._stdout = sys.stdout
+        sys.stdout = self._stringio = StringIO()
+        return self
+    def __exit__(self, *args):
+        self.extend(self._stringio.getvalue().splitlines())
+        del self._stringio # free up some memory
+        sys.stdout = self._stdout
+
 def runTest(args):
-    print("runTest")
+    # 1. parse environment for eversa to run tests in
+    esa = eversa(args.environment[0])
+
+    # 2. List all .py files in test directory
+    pyTestFiles = getPyFilesList(os.path.join(esa.WORK_DIR, "tests"))
+    pyToRun     = {}
+
+    # 3. Import each file as a separate module
+    for testFile in pyTestFiles:
+        pyToRun[testFile] = []
+        module = imp.load_source(f"esaTest_{testFile}", os.path.join(esa.WORK_DIR, "tests", testFile))
+        pyToRun[testFile] = []
+
+        functionsInEversa = getLibraryFunctions()
+
+        for (name, _func) in getmembers(module, isfunction):
+            if name in functionsInEversa:
+                continue
+            pyToRun[testFile].append(getattr(module, name))
+
+    for module in pyToRun:
+        for function in pyToRun[module]:
+            print(f"Running {module}:{function.__name__}:")
+            with Capturing() as output:
+                function(esa)
+            print("    OK")
+            # TODO: parse output for errors, or raise errors to catch here
+            # TODO: count tests, print summary at the end
 
 # ==============================================================================
 #

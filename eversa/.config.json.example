@@ -3,6 +3,7 @@
     "source_dir": "contracts",
     "bin_dir": "bin",
     "verbose": false,
+    "giver_enabled": ["local"],
     "configs": [
         {
             "name": "local",
