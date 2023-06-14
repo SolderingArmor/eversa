@@ -89,6 +89,7 @@ class eversa(object):
                     print("")
                 raise te
 
+            contract.RAISE = self.CONFIG.RAISE
             return contract
         return None
     

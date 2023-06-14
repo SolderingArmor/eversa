@@ -7,9 +7,9 @@ longDescription = 'Everscale/Venom rapid application development and testing too
   
 setup(
     name ='eversa',
-    version ='0.4.0',
+    version ='0.5.0',
     author ='Anton Platonov',
-    author_email ='anton@platonov.us',
+    author_email ='anton@platonov.io',
     url ='https://github.com/SolderingArmor/eversa',
     description ='Everscale/Venom rapid application development and testing tools.',
     long_description = longDescription,
@@ -27,7 +27,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    keywords ='ever everscale venom python package blockchain',
+    keywords ='ever everscale venom python package blockchain toolkit development',
     install_requires = requirements,
     zip_safe = False
 )

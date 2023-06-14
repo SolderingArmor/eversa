@@ -36,6 +36,7 @@ class EsaCallable(object):
         self.CONTRACT    = contractClass
         self.FUNC_NAME   = functionName
         self.FUNC_PARAMS = functionParams
+        self.RAISE       = False
 
     def callExternal(self, signer: Signer = None, waitForTransaction: bool = True):
         """
@@ -55,6 +56,9 @@ class EsaCallable(object):
                 raise
 
         result = callFunction(everClient=self.EVERCLIENT, abiPath=self.ABI, contractAddress=self.ADDRESS, functionName=self.FUNC_NAME, functionParams=self.FUNC_PARAMS, signer=signer, waitForTransaction=waitForTransaction)
+        
+        if result.ERROR_CODE != 0 and self.RAISE:
+            raise result.EXCEPTION
         return result
 
     def callFromMultisig(self, msig, value: int = DIME, bounce: bool = True, flags: int = 1):
@@ -62,7 +66,10 @@ class EsaCallable(object):
         Encode a message as `payload` and send to target contract using Multisig wallet.
         """
         messageBoc = prepareMessageBoc(abiPath=self.ABI, functionName=self.FUNC_NAME, functionParams=self.FUNC_PARAMS)
-        result     = msig.sendTransaction(dest=self.ADDRESS, value=value, bounce=bounce, flags=flags, payload=messageBoc)
+        result     = msig.sendTransaction(dest=self.ADDRESS, value=value, bounce=bounce, flags=flags, payload=messageBoc).callExternal()
+
+        if result.ERROR_CODE != 0 and self.RAISE:
+            raise result.EXCEPTION
         return result
 
     def submitToMultisig(self, msig, value: int = DIME, bounce: bool = True, allBalance: bool = False):
@@ -71,7 +78,10 @@ class EsaCallable(object):
         After the message is approved it will be sent to target contract.
         """
         messageBoc = prepareMessageBoc(abiPath=self.ABI, functionName=self.FUNC_NAME, functionParams=self.FUNC_PARAMS)
-        result     = msig.submitTransaction(dest=self.ADDRESS, value=value, bounce=bounce, allBalance=allBalance, payload=messageBoc)
+        result     = msig.submitTransaction(dest=self.ADDRESS, value=value, bounce=bounce, allBalance=allBalance, payload=messageBoc).callExternal()
+
+        if result.ERROR_CODE != 0 and self.RAISE:
+            raise result.EXCEPTION
         return result
 
     def run(self):
@@ -84,6 +94,8 @@ class EsaCallable(object):
         """
         boc = self.CONTRACT.getBOC()
         result = runFunctionLocal(everClient=self.EVERCLIENT, boc=boc, abiPath=self.ABI, contractAddress=self.ADDRESS, functionName=self.FUNC_NAME, functionParams=self.FUNC_PARAMS)
+        if isinstance(result, EsaReturnValue) and result.ERROR_CODE != 0 and self.RAISE:
+            raise result.EXCEPTION
         return result
 
 # ==============================================================================
@@ -101,6 +113,7 @@ class EsaContractGenerator(object):
     # Generic dynamic function implementation
     def _genericCallableFunction(self, f, **kwargs) -> EsaCallable:
         callable = EsaCallable(everClient=self.EVERCLIENT, contractClass=self, abiPath=self.ABI, tvcPath=self.TVC, contractAddress=self.ADDRESS, functionName=f.__name__, functionParams=kwargs)
+        callable.RAISE = self.RAISE
         return callable
     
     # ========================================
@@ -108,6 +121,8 @@ class EsaContractGenerator(object):
     def _genericDeployFunction(self, f, **kwargs):
         self.CONSTRUCTOR = kwargs
         result = deployContract(everClient=self.EVERCLIENT, abiPath=self.ABI, tvcPath=self.TVC, constructorInput=self.CONSTRUCTOR, initialData=self.INITDATA, signer=self.SIGNER, initialPubkey=self.INITIAL_PUBKEY)
+        if result.ERROR_CODE != 0 and self.RAISE:
+            raise result.EXCEPTION
         return result
 
     # ========================================
@@ -197,6 +212,7 @@ class EsaContract(EsaContractGenerator):
         self.INITDATA       = {} if not hasattr(self, "INITDATA")    else self.INITDATA
         self.INITIAL_PUBKEY = initialPubkey
         self.ADDRESS        = address
+        self.RAISE          = False
 
     def getBOC(self, forceUpdate: bool = False):
         if forceUpdate or self.BOC is None:

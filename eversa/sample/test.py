@@ -39,7 +39,7 @@ def testContracts(esa: eversa):
 
     # Specify contract constructor params in `deploy` function and print results
     result = msig1.deploy(owners=[f"0x{signer.keys.public}"], reqConfirms=1)
-    print(result["result"], result["exception"])
+    print(result)
 
 # ==============================================================================
 # RUNNING MANUALLY

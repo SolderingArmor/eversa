@@ -6,6 +6,7 @@ import argparse
 import json
 import shutil
 import imp
+import traceback
 from   io import StringIO 
 from   inspect import getmodule, getmembers, isfunction, signature
 from  .esa_lowlevel_util import generateRandomMnemonic, generateRandomSigner, saveSigner
@@ -34,6 +35,19 @@ parserSeed.add_argument('output', metavar='output', type=str, nargs='*', help='F
 
 parserKeys = subparsers.add_parser('new-keys',  help="Create a random private/public keypair with an option to save it to file")
 parserKeys.add_argument('output', metavar='output', type=str, nargs='*', help='File name to save keys to')
+
+# ==============================================================================
+#
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 # ==============================================================================
 #
@@ -145,6 +159,9 @@ def runTest(args):
     # 1. parse environment for eversa to run tests in
     esa = eversa(args.environment[0])
 
+    # Force blockchain errors to raise exceptions
+    esa.CONFIG.RAISE = True
+
     # 2. List all .py files in test directory
     pyTestFiles = getPyFilesList(os.path.join(esa.WORK_DIR, "tests"))
     pyToRun     = {}
@@ -162,14 +179,25 @@ def runTest(args):
                 continue
             pyToRun[testFile].append(getattr(module, name))
 
+    numModules  = 0
+    numTestsOK  = 0
+    numTestsNOK = 0
     for module in pyToRun:
+        numModules += 1
         for function in pyToRun[module]:
-            print(f"Running {module}:{function.__name__}:")
-            with Capturing() as output:
-                function(esa)
-            print("    OK")
-            # TODO: parse output for errors, or raise errors to catch here
-            # TODO: count tests, print summary at the end
+            print(f"{bcolors.OKBLUE}Running {module}:{function.__name__}{bcolors.ENDC}:")
+            try:
+                with Capturing() as output:
+                    function(esa)
+                print(f"    {bcolors.OKGREEN}✓ OK{bcolors.ENDC}")
+                numTestsOK += 1
+            except BaseException as e:
+                numTestsNOK += 1
+                print(f"    {bcolors.FAIL}✗ ERROR!\n    {module}:{function.__name__} output:{bcolors.ENDC}\n")
+                for line in output:
+                    print(line)
+                traceback.print_tb(e.__traceback__)
+    print(f"\n{bcolors.OKBLUE}SUMMARY:{bcolors.ENDC} Files: {numModules}; {bcolors.OKGREEN}Tests OK: {numTestsOK}{bcolors.ENDC}; {bcolors.FAIL}Tests FAIL: {numTestsNOK}{bcolors.ENDC}")
 
 # ==============================================================================
 #

@@ -20,6 +20,7 @@ class EsaConfig(object):
         self.GIVER         = ""
         self.GIVER_ENABLED = False
         self.PHRASE        = ""
+        self.RAISE         = False
 
         # TODO: check if config exists and give a graceful error throw
 

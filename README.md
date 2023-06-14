@@ -176,7 +176,12 @@ Something that needs to be done at some point to make life of users easier.
 
 ## Changelog
 
+v.0.5.0
+* Tests now work. Tests fail only if blockchain exception was received or manual exception was raised. Otherwise test will be considered OK.
+* Removed `EsaException`, because `EsaReturnValue` now keeps both result and exception.
+
 v.0.4.0
+
 * Added `giver_enabled` in `.config.json` file.
 * Added running `eversa test` for all test files in `tests` folder, currently WIP.
 * Updated test sample.
